@@ -1,0 +1,134 @@
+* {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.wrapper {
+  width: 100%;
+  margin: auto;
+  position: relative;
+}
+
+.logo {
+  font-size: 50px;
+  font-weight: 800;
+  float: left;
+  font-family: 'Courier New', Courier, monospace;
+  color: #364f6b;
+}
+
+.menu {
+  float: right;
+}
+
+nav {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  line-height: 80px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+  border: 1px solid #364f6b;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+nav ul li {
+  float: left;
+}
+
+nav ul li a {
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 16px 0px 16px;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+section {
+  margin: auto;
+  display: flex;
+  margin-bottom: 50px;
+}
+
+.kolom {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.kolom .deskripsi {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'comic sans ms' sans-serif;
+  color: #364f6b;
+}
+
+h1 {
+  font-family: 'comic sans ms' sans-serif;
+  font-weight: 800;
+  font-size: 45px;
+  margin-bottom: 20px;
+  color: #364f6b;
+  width: 100%;
+  line-height: 50%;
+}
+
+h2 {
+  font-family: 'comic sans ms' sans-serif;
+  font-weight: 800;
+  font-size: 45px;
+  margin-bottom: 20px;
+  color: #364f6b;
+  width: 100%;
+  line-height: 50%;
+}
+
+h5 {
+  font-family: 'comic sans ms' sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #364f6b;
+  width: 100%;
+  line-height: 10%;
+}
+
+p {
+  margin: 10px 0 10px 0;
+  padding: 10px 0 10px 0;
+}
+
+.tengah {
+  text-align: center;
+  width: 100%;
+}
+
+.partner-list {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.end {
+  text-align: center;
+  width: 100%;
+}

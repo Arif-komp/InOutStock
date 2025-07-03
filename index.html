@@ -4,174 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STOCK MANUAL GUDANG G5000</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            background-color: #f4f4f4;
         }
-        h1 {
+        header {
             text-align: center;
-            color: #333;
             margin-bottom: 20px;
         }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        select, input {
+        select, input, button {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            margin-top: 15px;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #007BFF;
-            color: white;
+            margin: 10px 0;
         }
         .history {
             margin-top: 20px;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            background-color: #f9f9f9;
+            background: #fff;
             padding: 10px;
-            border-radius: 4px;
-        }
-        .history div {
-            margin-bottom: 5px;
-            padding: 5px;
-            border-left: 4px solid #007BFF;
-            background-color: #e9f5ff;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-            button {
-                font-size: 14px;
-            }
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>STOCK MANUAL GUDANG G5000</h1>
-        
-        <label for="jenisProduk">Pilih Jenis Produk:</label>
-        <select id="jenisProduk" onchange="updateNamaProduk()">
-            <option value="">-- Pilih --</option>
-            <option value="SEMEN">SEMEN</option>
-            <option value="BESI">BESI</option>
-            <option value="BWG">BWG - KAWAT DURI</option>
-            <option value="GALVALUM">GALVALUM - BONDEX</option>
-        </select>
 
-        <label for="namaProduk">Pilih Nama Produk:</label>
-        <select id="namaProduk">
-            <option value="">-- Pilih --</option>
-        </select>
+<header>
+    <h1>STOCK MANUAL GUDANG G5000</h1>
+</header>
 
-        <label for="jumlahBarang">Jumlah Barang:</label>
-        <input type="number" id="jumlahBarang" min="1">
+<label for="jenisProduk">Pilih Jenis Produk:</label>
+<select id="jenisProduk" onchange="updateNamaProduk()">
+    <option value="">-- Pilih Jenis Produk --</option>
+    <option value="SEMEN">SEMEN</option>
+    <option value="BESI">BESI</option>
+    <option value="BWG">BWG - KAWAT DURI</option>
+    <option value="GALVALUM">GALVALUM - BONDEX</option>
+</select>
 
-        <label for="namaChecker">Nama Checker:</label>
-        <input type="text" id="namaChecker">
+<label for="namaProduk">Pilih Nama Produk:</label>
+<select id="namaProduk">
+    <option value="">-- Pilih Nama Produk --</option>
+</select>
 
-        <button onclick="inputBarang('masuk')">Barang Masuk</button>
-        <button onclick="inputBarang('keluar')">Barang Keluar</button>
-        <button onclick="resetForm()">Reset</button>
+<label for="jumlahBarang">Jumlah Barang:</label>
+<input type="number" id="jumlahBarang" placeholder="Masukkan jumlah barang" />
 
-        <div class="history" id="history"></div>
-    </div>
+<label for="namaChecker">Nama Checker:</label>
+<input type="text" id="namaChecker" placeholder="Masukkan nama checker" />
 
-    <script>
-        const produk = {
-            SEMEN: ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
-            BESI: ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
-            BWG: ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
-            GALVALUM: ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
+<button onclick="inputBarang('masuk')">Barang Masuk</button>
+<button onclick="inputBarang('keluar')">Barang Keluar</button>
+<button onclick="resetForm()">Reset</button>
+
+<div class="history" id="history">
+    <h3>History Inputan:</h3>
+    <ul id="historyList"></ul>
+</div>
+
+<script>
+    const produkData = {
+        SEMEN: ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
+        BESI: ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
+        BWG: ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
+        GALVALUM: ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
+    };
+
+   
+    function updateNamaProduk() {
+        const jenisProduk = document.getElementById("jenisProduk").value;
+        const namaProdukSelect = document.getElementById("namaProduk");
+        namaProdukSelect.innerHTML = '<option value="">-- Pilih Nama Produk --</option>'; // Reset options
+
+        if (jenisProduk) {
+            produkData[jenisProduk].forEach(produk => {
+                const option = document.createElement("option");
+                option.value = produk;
+                option.textContent = produk;
+                namaProdukSelect.appendChild(option);
+            });
+        }
+    }
+
+    function inputBarang(tipe) {
+        const namaProduk = document.getElementById("namaProduk").value;
+        const jumlahBarang = document.getElementById("jumlahBarang").value;
+        const namaChecker = document.getElementById("namaChecker").value;
+        const jenisProduk = document.getElementById("jenisProduk").value;
+
+        if (!namaProduk || !jumlahBarang || !namaChecker) {
+            alert("Semua field harus diisi!");
+            return;
+        }
+
+        const historyList = document.getElementById("historyList");
+        const listItem = document.createElement("li");
+        const waktuInput = new Date().toLocaleString();
+
+        listItem.textContent = `${waktuInput}: ${tipe === 'masuk' ? 'Masuk' : 'Keluar'} ( ${jumlahBarang} ) - ${namaProduk} oleh ${namaChecker}`;
+        historyList.appendChild(listItem);
+
+        // Simpan ke Google Sheets
+        saveToGoogleSheets(tipe, namaProduk, jumlahBarang, namaChecker);
+
+        resetForm();
+    }
+
+    function resetForm() {
+        document.getElementById("jenisProduk").value = "";
+        document.getElementById("namaProduk").innerHTML = '<option value="">-- Pilih Nama Produk --</option>';
+        document.getElementById("jumlahBarang").value = "";
+        document.getElementById("namaChecker").value = "";
+    }
+
+    function saveToGoogleSheets(tipe, namaProduk, jumlahBarang, namaChecker) {
+        const url = "https://script.google.com/macros/s/AKfycbzoriuaGRIl_4et_2XBTPS7dXpyt1W25R_kYM4BUO9ddxHNh2AbXKTn7b05EU_RN8m33Q/exec"; // Ganti dengan URL Google Apps Script Anda
+        const data = {
+            tipe: tipe,
+            namaProduk: namaProduk,
+            jumlahBarang: jumlahBarang,
+            namaChecker: namaChecker
         };
 
-        function updateNamaProduk() {
-            const jenisProduk = document.getElementById("jenisProduk").value;
-            const namaProdukSelect = document.getElementById("namaProduk");
-            namaProdukSelect.innerHTML = '<option value="">-- Pilih --</option>'; // Reset options
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Success:", data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    }
+</script>
 
-            if (jenisProduk) {
-                produk[jenisProduk].forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item;
-                    option.textContent = item;
-                    namaProdukSelect.appendChild(option);
-                });
-            }
-        }
-
-        function inputBarang(tipe) {
-            const namaProduk = document.getElementById("namaProduk").value;
-            const jumlahBarang = document.getElementById("jumlahBarang").value;
-            const namaChecker = document.getElementById("namaChecker").value;
-
-            if (!namaProduk || !jumlahBarang || !namaChecker) {
-                alert("Semua field harus diisi!");
-                return;
-            }
-
-            const labelJumlah = getLabelJumlah(namaProduk);
-            const historyDiv = document.getElementById("history");
-            const waktuInput = new Date().toLocaleString();
-            const entry = `${waktuInput}: ${tipe === 'masuk' ? 'Barang Masuk' : 'Barang Keluar'} - ${namaProduk} (${jumlahBarang} ${labelJumlah}) oleh ${namaChecker}`;
-            historyDiv.innerHTML += `<div>${entry}</div>`;
-
-            // Simpan data ke Google Sheets
-            google.script.run.withSuccessHandler(() => {
-                console.log("Data berhasil disimpan.");
-            }).simpanData(namaProduk, jumlahBarang, namaChecker, tipe);
-
-            resetForm();
-        }
-
-        function getLabelJumlah(namaProduk) {
-            if (namaProduk.includes("SEMEN") || namaProduk.includes("PEREKAT")) {
-                return "sak";
-            } else if (namaProduk.includes("KAWAT") || namaProduk.includes("LIS KAYU") || namaProduk.includes("BENDRAT STIK")) {
-                return "batang";
-            } else {
-                return "rol";
-            }
-        }
-
-        function resetForm() {
-            document.getElementById("jenisProduk").value = "";
-            document.getElementById("namaProduk").innerHTML = '<option value="">-- Pilih --</option>';
-            document.getElementById("jumlahBarang").value = "";
-            document.getElementById("namaChecker").value = "";
-        }
-    </script>
 </body>
 </html>

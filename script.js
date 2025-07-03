@@ -53,7 +53,7 @@ function resetForm() {
 }
 
 function sendToGoogleSheets(jenisProduk, namaProduk, jumlah, checker, action) {
-    const url = "https://script.google.com/macros/library/d/1PkSUak-sNKDbI1iT93QtOs0bylUMvkaICfQPUT8Dr96N5EIjemTbaz4-/1https://script.google.com/macros/s/AKfycbxc0XaMSpT1pQWIGUqy9cedrnKGmeTGryFuMn7yxp8hiuM2XjTsSdNRTLMZJ6KQCBx2aA/exechttps://script.google.com/macros/s/AKfycbyUGeFfk5osWIs7tql9924OzgjN7jEZ6J6om3UXMMNuioWsdN1pblLshkV5AVUjkXe7ZQ/exec"; // Ganti dengan URL Google Apps Script Anda
+    const url = "https://script.google.com/macros/s/AKfycbyuXAKoGoeCr2T0sLCwpFwzDhokJwnY4jMimxiKo2g24TlH9yxitdBazAZk8hWpGyk4kg/exec"; // Ganti dengan URL Google Apps Script Anda
     const data = {
         jenisProduk,
         namaProduk,

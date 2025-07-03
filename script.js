@@ -36,7 +36,7 @@ function submitData(tipe) {
     let qtyLabel;
 
     // Menentukan qtyLabel berdasarkan nama produk
-    if (namaProduk.includes("SEMEN")||namaProduk.includes("PEREKAT")) {
+    if (namaProduk.includes("SEMEN")||namaProduk.includes("SB PEREKAT")) {
         qtyLabel = 'sak';
     } else if (namaProduk.includes("KAWAT") || namaProduk.includes("BESI") || namaProduk.includes("BENDRAT STIK 20 KG") || namaProduk.includes("LIS")) {
         qtyLabel = 'batang';

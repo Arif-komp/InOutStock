@@ -40,7 +40,7 @@ function submitData(tipe) {
         qtyLabel = 'sak';
     } else if (namaProduk.includes("KAWAT") || namaProduk.includes("BESI") || namaProduk.includes("LIS KAYU 4X4")) {
         qtyLabel = 'batang';
-    } else if (namaProduk.includes("BENDRAT") || namaProduk.includes("BWG")) || namaProduk.includes("KAWAT DURI"){
+    } else if (namaProduk.includes("BENDRAT") || namaProduk.includes("BWG") || namaProduk.includes("KAWAT DURI")){
         qtyLabel = 'rol';
     } else if (namaProduk.includes("GALVALUM")) {
         qtyLabel = 'lembar';

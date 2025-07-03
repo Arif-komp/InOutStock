@@ -33,9 +33,23 @@ function submitData(tipe) {
     }
 
     const action = tipe === 'masuk' ? 'masuk' : 'keluar';
-    const qtyLabel = jenisProduk === 'semen' ? 'sak' : 'batang';
+    let qtyLabel;
+
+    // Menentukan qtyLabel berdasarkan nama produk
+    if (namaProduk.includes("SEMEN")) {
+        qtyLabel = 'sak';
+    } else if (namaProduk.includes("KAWAT") || namaProduk.includes("BESI") || namaProduk.includes("LIS KAYU 4X4")) {
+        qtyLabel = 'batang';
+    } else if (namaProduk.includes("BENDRAT")) {
+        qtyLabel = 'rol';
+    } else if (namaProduk.includes("GALVALUM")) {
+        qtyLabel = 'lembar';
+    } else {
+        qtyLabel = 'unit'; // Default untuk produk yang tidak terdaftar
+    }
+
     const timestamp = new Date().toLocaleString();
-// menampilkan hasil input di history
+    // Menampilkan hasil input di history
     const historyDiv = document.getElementById("history");
     historyDiv.innerHTML += `<p>${timestamp} ${action} - ${namaProduk} ( ${jumlah} ${qtyLabel} ) oleh ${checker}</p>`;
 
@@ -44,6 +58,8 @@ function submitData(tipe) {
 
     resetForm();
 }
+
+
 
 function resetForm() {
     document.getElementById("jenis-produk").value = "";

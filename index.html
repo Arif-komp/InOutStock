@@ -142,7 +142,23 @@
             console.error("Error:", error);
         });
     }
+
+    function doPost(e) {
+    const sheet = SpreadsheetApp.openById("1iQv5BKBUpIZJqarkNg82UUjUECeE-AJUgN80vWQ5hOE").getActiveSheet(); // Ganti dengan ID Spreadsheet Anda
+    const data = JSON.parse(e.postData.contents);
+
+    // Menentukan kolom berdasarkan tipe
+    const column = data.tipe === 'masuk' ? 1 : 2; // Kolom 1 untuk barang masuk, kolom 2 untuk barang keluar
+
+    // Menyimpan data ke dalam sheet
+    sheet.appendRow([new Date(), data.namaProduk, data.jumlahBarang, data.namaChecker, data.tipe]);
+
+    return ContentService.createTextOutput(JSON.stringify({ result: "success" })).setMimeType(ContentService.MimeType.JSON);
+}
+
 </script>
 
 </body>
 </html>
+
+

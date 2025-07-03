@@ -40,7 +40,7 @@ function submitData(tipe) {
         qtyLabel = 'sak';
     } else if (namaProduk.includes("KAWAT") || namaProduk.includes("BESI") || namaProduk.includes("BENDRAT STIK 20 KG") || namaProduk.includes("LIS")) {
         qtyLabel = 'batang';
-    } else if (namaProduk.includes("BENDRAT") || namaProduk.includes("BWG") || namaProduk.includes("KAWAT DURI")){
+    } else if (namaProduk.includes("BENDRAT") || namaProduk.includes("BWG") || namaProduk.includes("KAWAT DURI BIASA")|| namaProduk.includes("KAWAT DURI 100M (ANTI KARAT")){
         qtyLabel = 'rol';
     } else if (namaProduk.includes("GALVALUM")) {
         qtyLabel = 'lembar';

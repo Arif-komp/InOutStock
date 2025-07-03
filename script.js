@@ -38,7 +38,7 @@ function submitData(tipe) {
     // Menentukan qtyLabel berdasarkan nama produk
     if (namaProduk.includes("SEMEN")) {
         qtyLabel = 'sak';
-    } else if (namaProduk.includes("KAWAT") || namaProduk.includes("BESI") || namaProduk.includes("LIS KAYU 4X4")|| namaProduk.includes("STIK")) {
+    } else if (namaProduk.includes("KAWAT") || namaProduk.includes("BESI") || namaProduk.includes("LIS KAYU 4X4")|| namaProduk.includes("BENDRAT STIK")) {
         qtyLabel = 'batang';
     } else if (namaProduk.includes("BENDRAT") || namaProduk.includes("BWG") || namaProduk.includes("KAWAT DURI")){
         qtyLabel = 'rol';

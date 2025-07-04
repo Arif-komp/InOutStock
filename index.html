@@ -123,7 +123,7 @@
             document.getElementById('history').innerHTML += `<div>${historyEntry}</div>`;
 
             // Kirim data ke Google Sheets
-            fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+            fetch('https://script.google.com/macros/s/AKfycbxlf1kOKQyOC1jh5iRiQf0arb8skjKkWfnBBXW8DNaRPRzFPQ96AnhuyjqMcBfiKQ7VYQ/exec', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

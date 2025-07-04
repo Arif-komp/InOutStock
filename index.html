@@ -7,164 +7,123 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
+            margin: 20px;
         }
         form {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
         }
-        .form-group {
-            margin-bottom: 15px;
+        label, select, input, button {
+            margin: 10px 0;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        select, input[type="number"], input[type="text"], button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #history {
+        .history {
             margin-top: 20px;
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            max-height: 300px;
-            overflow-y: auto;
         }
     </style>
 </head>
 <body>
-
-<h1>STOCK MANUAL GUDANG G5000</h1>
-<form id="stockForm">
-    <div class="form-group">
-        <label for="productType">Pilih Jenis Produk:</label>
-        <select id="productType" required>
-            <option value="">-- Pilih --</option>
+    <h1>STOCK MANUAL GUDANG G5000</h1>
+    <form id="stockForm">
+        <label for="jenis_produk">Pilih Jenis Produk:</label>
+        <select id="jenis_produk" name="jenis_produk" required>
+            <option value="">--Pilih--</option>
             <option value="SEMEN">SEMEN</option>
             <option value="BESI">BESI</option>
-            <option value="BWG">BWG - KAWAT DURI</option>
-            <option value="GALVALUM">GALVALUM - BONDEX</option>
+            <option value="BWG - KAWAT DURI">BWG - KAWAT DURI</option>
+            <option value="GALVALUM - BONDEX">GALVALUM - BONDEX</option>
         </select>
-    </div>
-    <div class="form-group">
-        <label for="productName">Pilih Nama Produk:</label>
-        <select id="productName" required>
-            <option value="">-- Pilih --</option>
+
+        <label for="nama_produk">Pilih Nama Produk:</label>
+        <select id="nama_produk" name="nama_produk" required>
+            <option value="">--Pilih--</option>
         </select>
-    </div>
-    <div class="form-group">
-        <label for="quantity">Jumlah Barang:</label>
-        <input type="number" id="quantity" required>
-    </div>
-    <div class="form-group">
-        <label for="checkerName">Nama Checker:</label>
-        <input type="text" id="checkerName" required>
-    </div>
-    <button type="button" onclick="submitStock('in')">Barang Masuk</button>
-    <button type="button" onclick="submitStock('out')">Barang Keluar</button>
-    <button type="reset">Reset</button>
-</form>
 
-<div id="history"></div>
+        <label for="jumlah_barang">Jumlah Barang:</label>
+        <input type="number" id="jumlah_barang" name="jumlah_barang" required>
 
-<script>
-    // Data produk berdasarkan jenis
-    const products = {
-        SEMEN: ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
-        BESI: ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
-        BWG: ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
-        GALVALUM: ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
-    };
+        <label for="nama_checker">Nama Checker:</label>
+        <input type="text" id="nama_checker" name="nama_checker" required>
 
-    // Menangani perubahan jenis produk
-    document.getElementById('productType').addEventListener('change', function() {
-        const productNameSelect = document.getElementById('productName');
-        productNameSelect.innerHTML = '<option value="">-- Pilih --</option>'; // Reset pilihan nama produk
-        const selectedType = this.value;
-        if (products[selectedType]) {
-            products[selectedType].forEach(product => {
-                const option = document.createElement('option');
-                option.value = product;
-                option.textContent = product;
-                productNameSelect.appendChild(option);
-            });
-        }
-    });
+        <button type="button" onclick="submitForm('masuk')">Barang Masuk</button>
+        <button type="button" onclick="submitForm('keluar')">Barang Keluar</button>
+        <button type="reset">Reset</button>
+    </form>
 
-    // Fungsi untuk menyimpan data ke Google Sheets
-    function submitStock(type) {
-        const productType = document.getElementById('productType').value;
-        const productName = document.getElementById('productName').value;
-        const quantity = document.getElementById('quantity').value;
-        const checkerName = document.getElementById('checkerName').value;
+    <div class="history" id="history"></div>
 
-        if (productType && productName && quantity && checkerName) {
-            const label = getLabel(productType);
-            const historyEntry = `Waktu Input: ${new Date().toLocaleString()} - ${type === 'in' ? 'Barang Masuk' : 'Barang Keluar'} - ${productName} (${quantity} ${label}) oleh ${checkerName}`;
-            document.getElementById('history').innerHTML += `<div>${historyEntry}</div>`;
+    <script>
+        const produkOptions = {
+            'SEMEN': ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
+            'BESI': ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
+            'BWG - KAWAT DURI': ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
+            'GALVALUM - BONDEX': ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
+        };
 
-            // Kirim data ke Google Sheets
-            fetch('https://script.google.com/macros/s/AKfycbxlf1kOKQyOC1jh5iRiQf0arb8skjKkWfnBBXW8DNaRPRzFPQ96AnhuyjqMcBfiKQ7VYQ/exec', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    type: type,
-                    productType: productType,
-                    productName: productName,
-                    quantity: quantity,
-                    checkerName: checkerName
+        document.getElementById('jenis_produk').addEventListener('change', function() {
+            const namaProdukSelect = document.getElementById('nama_produk');
+            namaProdukSelect.innerHTML = '<option value="">--Pilih--</option>'; // Reset options
+            const selectedJenis = this.value;
+            if (produkOptions[selectedJenis]) {
+                produkOptions[selectedJenis].forEach(function(produk) {
+                    const option = document.createElement('option');
+                    option.value = produk;
+                    option.textContent = produk;
+                    namaProdukSelect.appendChild(option);
+                });
+            }
+        });
+
+        function submitForm(action) {
+            const jenisProduk = document.getElementById('jenis_produk').value;
+            const namaProduk = document.getElementById('nama_produk').value;
+            const jumlahBarang = document.getElementById('jumlah_barang').value;
+            const namaChecker = document.getElementById('nama_checker').value;
+
+            if (jenisProduk && namaProduk && jumlahBarang && namaChecker) {
+                const data = {
+                    action: action,
+                    jenis_produk: jenisProduk,
+                    nama_produk: namaProduk,
+                    jumlah_barang: jumlahBarang,
+                    nama_checker: namaChecker
+                };
+
+                fetch('YOUR_SCRIPT_URL', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        } else {
-            alert('Semua field harus diisi!');
+                .then(response => response.json())
+                .then(result => {
+                    if (result.result === 'success') {
+                        // Tampilkan history
+                        const historyDiv = document.getElementById('history');
+                        const labelJumlah = getLabelJumlah(namaProduk);
+                        historyDiv.innerHTML += `<p>${new Date().toLocaleString()}: ${action === 'masuk' ? 'Barang Masuk' : 'Barang Keluar'} - ${namaProduk} (${jumlahBarang} ${labelJumlah}) - Cek Nama Checker: ${namaChecker}</p>`;
+                        document.getElementById('stockForm').reset(); // Reset form
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            } else {
+                alert('Semua field harus diisi!');
+            }
         }
-    }
 
-    // Fungsi untuk mendapatkan label berdasarkan jenis produk
-    function getLabel(productType) {
-        switch (productType) {
-            case 'SEMEN':
-            case 'BWG':
+        function getLabelJumlah(namaProduk) {
+            if (namaProduk.includes('SEMEN') || namaProduk.includes('PEREKAT')) {
                 return 'sak';
-            case 'BESI':
-            case 'LIS KAYU':
-            case 'BENDRAT STIK':
+            } else if (namaProduk.includes('KAWAT') || namaProduk.includes('LIS KAYU') || namaProduk.includes('BENDRAT STIK')) {
                 return 'batang';
-            case 'GALVALUM':
+            } else if (namaProduk.includes('KAWAT DURI') || namaProduk.includes('BENDRAT') || namaProduk.includes('BWG')) {
+                return 'rol';
+            } else if (namaProduk.includes('GALVALUM') || namaProduk.includes('BONDEX')) {
                 return 'lembar';
-            default:
-                return '';
+            }
+            return '';
         }
-    }
-</script>
-
+    </script>
 </body>
 </html>

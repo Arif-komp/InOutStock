@@ -11,154 +11,160 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
-        header {
+        h1 {
             text-align: center;
-            margin-bottom: 20px;
         }
-        select, input, button {
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type="number"], input[type="text"], button {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin-top: 5px;
         }
-        .history {
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #history {
             margin-top: 20px;
-            background: #fff;
+            background: white;
             padding: 10px;
-            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>STOCK MANUAL GUDANG G5000</h1>
-</header>
+<h1>STOCK MANUAL GUDANG G5000</h1>
+<form id="stockForm">
+    <div class="form-group">
+        <label for="productType">Pilih Jenis Produk:</label>
+        <select id="productType" required>
+            <option value="">-- Pilih --</option>
+            <option value="SEMEN">SEMEN</option>
+            <option value="BESI">BESI</option>
+            <option value="BWG">BWG - KAWAT DURI</option>
+            <option value="GALVALUM">GALVALUM - BONDEX</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="productName">Pilih Nama Produk:</label>
+        <select id="productName" required>
+            <option value="">-- Pilih --</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Jumlah Barang:</label>
+        <input type="number" id="quantity" required>
+    </div>
+    <div class="form-group">
+        <label for="checkerName">Nama Checker:</label>
+        <input type="text" id="checkerName" required>
+    </div>
+    <button type="button" onclick="submitStock('in')">Barang Masuk</button>
+    <button type="button" onclick="submitStock('out')">Barang Keluar</button>
+    <button type="reset">Reset</button>
+</form>
 
-<label for="jenisProduk">Pilih Jenis Produk:</label>
-<select id="jenisProduk" onchange="updateNamaProduk()">
-    <option value="">-- Pilih Jenis Produk --</option>
-    <option value="SEMEN">SEMEN</option>
-    <option value="BESI">BESI</option>
-    <option value="BWG">BWG - KAWAT DURI</option>
-    <option value="GALVALUM">GALVALUM - BONDEX</option>
-</select>
-
-<label for="namaProduk">Pilih Nama Produk:</label>
-<select id="namaProduk">
-    <option value="">-- Pilih Nama Produk --</option>
-</select>
-
-<label for="jumlahBarang">Jumlah Barang:</label>
-<input type="number" id="jumlahBarang" placeholder="Masukkan jumlah barang" />
-
-<label for="namaChecker">Nama Checker:</label>
-<input type="text" id="namaChecker" placeholder="Masukkan nama checker" />
-
-<button onclick="inputBarang('masuk')">Barang Masuk</button>
-<button onclick="inputBarang('keluar')">Barang Keluar</button>
-<button onclick="resetForm()">Reset</button>
-
-<div class="history" id="history">
-    <h3>History Inputan:</h3>
-    <ul id="historyList"></ul>
-</div>
+<div id="history"></div>
 
 <script>
-    const produkData = {
+    // Data produk berdasarkan jenis
+    const products = {
         SEMEN: ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
         BESI: ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
         BWG: ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
         GALVALUM: ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
     };
 
-   
-    function updateNamaProduk() {
-        const jenisProduk = document.getElementById("jenisProduk").value;
-        const namaProdukSelect = document.getElementById("namaProduk");
-        namaProdukSelect.innerHTML = '<option value="">-- Pilih Nama Produk --</option>'; // Reset options
-
-        if (jenisProduk) {
-            produkData[jenisProduk].forEach(produk => {
-                const option = document.createElement("option");
-                option.value = produk;
-                option.textContent = produk;
-                namaProdukSelect.appendChild(option);
+    // Menangani perubahan jenis produk
+    document.getElementById('productType').addEventListener('change', function() {
+        const productNameSelect = document.getElementById('productName');
+        productNameSelect.innerHTML = '<option value="">-- Pilih --</option>'; // Reset pilihan nama produk
+        const selectedType = this.value;
+        if (products[selectedType]) {
+            products[selectedType].forEach(product => {
+                const option = document.createElement('option');
+                option.value = product;
+                option.textContent = product;
+                productNameSelect.appendChild(option);
             });
         }
-    }
+    });
 
-    function inputBarang(tipe) {
-        const namaProduk = document.getElementById("namaProduk").value;
-        const jumlahBarang = document.getElementById("jumlahBarang").value;
-        const namaChecker = document.getElementById("namaChecker").value;
-        const jenisProduk = document.getElementById("jenisProduk").value;
+    // Fungsi untuk menyimpan data ke Google Sheets
+    function submitStock(type) {
+        const productType = document.getElementById('productType').value;
+        const productName = document.getElementById('productName').value;
+        const quantity = document.getElementById('quantity').value;
+        const checkerName = document.getElementById('checkerName').value;
 
-        if (!namaProduk || !jumlahBarang || !namaChecker) {
-            alert("Semua field harus diisi!");
-            return;
+        if (productType && productName && quantity && checkerName) {
+            const label = getLabel(productType);
+            const historyEntry = `Waktu Input: ${new Date().toLocaleString()} - ${type === 'in' ? 'Barang Masuk' : 'Barang Keluar'} - ${productName} (${quantity} ${label}) oleh ${checkerName}`;
+            document.getElementById('history').innerHTML += `<div>${historyEntry}</div>`;
+
+            // Kirim data ke Google Sheets
+            fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    type: type,
+                    productType: productType,
+                    productName: productName,
+                    quantity: quantity,
+                    checkerName: checkerName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        } else {
+            alert('Semua field harus diisi!');
         }
-
-        const historyList = document.getElementById("historyList");
-        const listItem = document.createElement("li");
-        const waktuInput = new Date().toLocaleString();
-
-        listItem.textContent = `${waktuInput}: ${tipe === 'masuk' ? 'Masuk' : 'Keluar'} ( ${jumlahBarang} ) - ${namaProduk} oleh ${namaChecker}`;
-        historyList.appendChild(listItem);
-
-        // Simpan ke Google Sheets
-        saveToGoogleSheets(tipe, namaProduk, jumlahBarang, namaChecker);
-
-        resetForm();
     }
 
-    function resetForm() {
-        document.getElementById("jenisProduk").value = "";
-        document.getElementById("namaProduk").innerHTML = '<option value="">-- Pilih Nama Produk --</option>';
-        document.getElementById("jumlahBarang").value = "";
-        document.getElementById("namaChecker").value = "";
+    // Fungsi untuk mendapatkan label berdasarkan jenis produk
+    function getLabel(productType) {
+        switch (productType) {
+            case 'SEMEN':
+            case 'BWG':
+                return 'sak';
+            case 'BESI':
+            case 'LIS KAYU':
+            case 'BENDRAT STIK':
+                return 'batang';
+            case 'GALVALUM':
+                return 'lembar';
+            default:
+                return '';
+        }
     }
-
-    function saveToGoogleSheets(tipe, namaProduk, jumlahBarang, namaChecker) {
-        const url = "https://script.google.com/macros/s/AKfycbzoriuaGRIl_4et_2XBTPS7dXpyt1W25R_kYM4BUO9ddxHNh2AbXKTn7b05EU_RN8m33Q/exec"; // Ganti dengan URL Google Apps Script Anda
-        const data = {
-            tipe: tipe,
-            namaProduk: namaProduk,
-            jumlahBarang: jumlahBarang,
-            namaChecker: namaChecker
-        };
-
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Success:", data);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-    }
-
-    function doPost(e) {
-    const sheet = SpreadsheetApp.openById("1iQv5BKBUpIZJqarkNg82UUjUECeE-AJUgN80vWQ5hOE").getActiveSheet(); // Ganti dengan ID Spreadsheet Anda
-    const data = JSON.parse(e.postData.contents);
-
-    // Menentukan kolom berdasarkan tipe
-    const column = data.tipe === 'masuk' ? 1 : 2; // Kolom 1 untuk barang masuk, kolom 2 untuk barang keluar
-
-    // Menyimpan data ke dalam sheet
-    sheet.appendRow([new Date(), data.namaProduk, data.jumlahBarang, data.namaChecker, data.tipe]);
-
-    return ContentService.createTextOutput(JSON.stringify({ result: "success" })).setMimeType(ContentService.MimeType.JSON);
-}
-
 </script>
 
 </body>
 </html>
-
-

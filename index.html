@@ -1,129 +1,321 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOCK MANUAL GUDANG G5000</title>
+    <title>Stock Manual Gudang G5000</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 400px;
+        
+        .navbar {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        label, select, input, button {
-            margin: 10px 0;
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
-        .history {
-            margin-top: 20px;
+        
+        .form-container:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset {
+            background-color: #64748b;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-reset:hover {
+            background-color: #475569;
+            transform: translateY(-2px);
+        }
+        
+        .history-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .history-item:hover {
+            transform: translateX(5px);
         }
     </style>
 </head>
 <body>
-    <h1>STOCK MANUAL GUDANG G5000</h1>
-    <form id="stockForm">
-        <label for="jenis_produk">Pilih Jenis Produk:</label>
-        <select id="jenis_produk" name="jenis_produk" required>
-            <option value="">--Pilih--</option>
-            <option value="SEMEN">SEMEN</option>
-            <option value="BESI">BESI</option>
-            <option value="BWG - KAWAT DURI">BWG - KAWAT DURI</option>
-            <option value="GALVALUM - BONDEX">GALVALUM - BONDEX</option>
-        </select>
-
-        <label for="nama_produk">Pilih Nama Produk:</label>
-        <select id="nama_produk" name="nama_produk" required>
-            <option value="">--Pilih--</option>
-        </select>
-
-        <label for="jumlah_barang">Jumlah Barang:</label>
-        <input type="number" id="jumlah_barang" name="jumlah_barang" required>
-
-        <label for="nama_checker">Nama Checker:</label>
-        <input type="text" id="nama_checker" name="nama_checker" required>
-
-        <button type="button" onclick="submitForm('masuk')">Barang Masuk</button>
-        <button type="button" onclick="submitForm('keluar')">Barang Keluar</button>
-        <button type="reset">Reset</button>
-    </form>
-
-    <div class="history" id="history"></div>
+    <nav class="navbar text-white p-4 mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold">STOCK MANUAL GUDANG G5000</h1>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4">
+        <!-- Form Input -->
+        <div class="form-container p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Form Input Barang</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="jenisBarang" class="block text-sm font-medium text-gray-700 mb-1">Jenis Barang</label>
+                    <select id="jenisBarang" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Pilih Jenis Barang</option>
+                        <option value="elektronik">Elektronik</option>
+                        <option value="perkakas">Perkakas</option>
+                        <option value="makanan">Makanan</option>
+                        <option value="minuman">Minuman</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="namaBarang" class="block text-sm font-medium text-gray-700 mb-1">Nama Barang</label>
+                    <select id="namaBarang" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" disabled>
+                        <option value="">Pilih Jenis Barang terlebih dahulu</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="jumlah" class="block text-sm font-medium text-gray-700 mb-1">Jumlah</label>
+                    <input type="number" id="jumlah" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" min="1">
+                </div>
+                
+                <div>
+                    <label for="checker" class="block text-sm font-medium text-gray-700 mb-1">Checker</label>
+                    <input type="text" id="checker" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-4 mt-6">
+                <button id="btnMasuk" class="btn-primary px-6 py-2 text-white rounded-md font-medium shadow">Barang Masuk</button>
+                <button id="btnKeluar" class="btn-danger px-6 py-2 text-white rounded-md font-medium shadow">Barang Keluar</button>
+                <button id="btnReset" class="btn-reset px-6 py-2 text-white rounded-md font-medium shadow">Reset Form</button>
+            </div>
+        </div>
+        
+        <!-- History Section -->
+        <div class="form-container p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">History Input</h2>
+            <div id="historyContainer" class="space-y-4">
+                <!-- History items will be added here dynamically -->
+            </div>
+        </div>
+    </div>
 
     <script>
-        const produkOptions = {
-            'SEMEN': ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
-            'BESI': ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
-            'BWG - KAWAT DURI': ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
-            'GALVALUM - BONDEX': ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
+        // Data barang berdasarkan jenis
+        const barangData = {
+            elektronik: ["TV", "Kulkas", "AC", "Mesin Cuci", "Laptop"],
+            perkakas: ["Palu", "Obeng", "Gergaji", "Tang", "Bor"],
+            makanan: ["Biskuit", "Roti", "Snack", "Coklat", "Permen"],
+            minuman: ["Air Mineral", "Jus", "Soda", "Kopi", "Teh"]
         };
-
-        document.getElementById('jenis_produk').addEventListener('change', function() {
-            const namaProdukSelect = document.getElementById('nama_produk');
-            namaProdukSelect.innerHTML = '<option value="">--Pilih--</option>'; // Reset options
-            const selectedJenis = this.value;
-            if (produkOptions[selectedJenis]) {
-                produkOptions[selectedJenis].forEach(function(produk) {
+        
+        // Google Sheets script URL (ganti dengan URL Apps Script Anda)
+        const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        
+        // Elemen DOM
+        const jenisBarangSelect = document.getElementById('jenisBarang');
+        const namaBarangSelect = document.getElementById('namaBarang');
+        const jumlahInput = document.getElementById('jumlah');
+        const checkerInput = document.getElementById('checker');
+        const btnMasuk = document.getElementById('btnMasuk');
+        const btnKeluar = document.getElementById('btnKeluar');
+        const btnReset = document.getElementById('btnReset');
+        const historyContainer = document.getElementById('historyContainer');
+        
+        // Event listener untuk jenis barang
+        jenisBarangSelect.addEventListener('change', function() {
+            const jenis = this.value;
+            namaBarangSelect.disabled = !jenis;
+            
+            if (jenis) {
+                namaBarangSelect.innerHTML = '<option value="">Pilih Nama Barang</option>';
+                barangData[jenis].forEach(item => {
                     const option = document.createElement('option');
-                    option.value = produk;
-                    option.textContent = produk;
-                    namaProdukSelect.appendChild(option);
+                    option.value = item;
+                    option.textContent = item;
+                    namaBarangSelect.appendChild(option);
                 });
+            } else {
+                namaBarangSelect.innerHTML = '<option value="">Pilih Jenis Barang terlebih dahulu</option>';
+                namaBarangSelect.disabled = true;
             }
         });
-
-        function submitForm(action) {
-            const jenisProduk = document.getElementById('jenis_produk').value;
-            const namaProduk = document.getElementById('nama_produk').value;
-            const jumlahBarang = document.getElementById('jumlah_barang').value;
-            const namaChecker = document.getElementById('nama_checker').value;
-
-            if (jenisProduk && namaProduk && jumlahBarang && namaChecker) {
-                const data = {
-                    action: action,
-                    jenis_produk: jenisProduk,
-                    nama_produk: namaProduk,
-                    jumlah_barang: jumlahBarang,
-                    nama_checker: namaChecker
-                };
-
-                fetch('YOUR_SCRIPT_URL', {
+        
+        // Fungsi untuk menambahkan item ke history
+        function addHistoryItem(data, tipe) {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item bg-white p-4 rounded-md shadow-sm';
+            
+            const timestamp = new Date().toLocaleString();
+            const badgeClass = tipe === 'masuk' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+            
+            historyItem.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">${data.namaBarang}</span>
+                    <span class="text-sm text-gray-500">${timestamp}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                        <span class="text-gray-600">Jenis:</span>
+                        <span>${data.jenisBarang}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Jumlah:</span>
+                        <span class="font-medium">${data.jumlah}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Checker:</span>
+                        <span>${data.checker}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Tipe:</span>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${badgeClass}">
+                            Barang ${tipe}
+                        </span>
+                    </div>
+                </div>
+            `;
+            
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+        }
+        
+        // Fungsi untuk mengirim data ke Google Sheets
+        async function sendToGoogleSheets(data, tipe) {
+            try {
+                const formData = new FormData();
+                formData.append('timestamp', new Date().toISOString());
+                formData.append('jenisBarang', data.jenisBarang);
+                formData.append('namaBarang', data.namaBarang);
+                formData.append('jumlah', data.jumlah);
+                formData.append('checker', data.checker);
+                formData.append('tipe', tipe);
+                
+                const response = await fetch(scriptURL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.result === 'success') {
-                        // Tampilkan history
-                        const historyDiv = document.getElementById('history');
-                        const labelJumlah = getLabelJumlah(namaProduk);
-                        historyDiv.innerHTML += `<p>${new Date().toLocaleString()}: ${action === 'masuk' ? 'Barang Masuk' : 'Barang Keluar'} - ${namaProduk} (${jumlahBarang} ${labelJumlah}) - Cek Nama Checker: ${namaChecker}</p>`;
-                        document.getElementById('stockForm').reset(); // Reset form
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            } else {
-                alert('Semua field harus diisi!');
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return { status: 'error', message: error.message };
             }
         }
-
-        function getLabelJumlah(namaProduk) {
-            if (namaProduk.includes('SEMEN') || namaProduk.includes('PEREKAT')) {
-                return 'sak';
-            } else if (namaProduk.includes('KAWAT') || namaProduk.includes('LIS KAYU') || namaProduk.includes('BENDRAT STIK')) {
-                return 'batang';
-            } else if (namaProduk.includes('KAWAT DURI') || namaProduk.includes('BENDRAT') || namaProduk.includes('BWG')) {
-                return 'rol';
-            } else if (namaProduk.includes('GALVALUM') || namaProduk.includes('BONDEX')) {
-                return 'lembar';
+        
+        // Fungsi untuk validasi form
+        function validateForm() {
+            if (!jenisBarangSelect.value) {
+                alert('Pilih jenis barang terlebih dahulu');
+                return false;
             }
-            return '';
+            
+            if (!namaBarangSelect.value) {
+                alert('Pilih nama barang terlebih dahulu');
+                return false;
+            }
+            
+            if (!jumlahInput.value || parseInt(jumlahInput.value) <= 0) {
+                alert('Masukkan jumlah yang valid (lebih dari 0)');
+                return false;
+            }
+            
+            if (!checkerInput.value.trim()) {
+                alert('Masukkan nama checker');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Event listener untuk tombol masuk
+        btnMasuk.addEventListener('click', async function() {
+            if (!validateForm()) return;
+            
+            const formData = {
+                jenisBarang: jenisBarangSelect.value,
+                namaBarang: namaBarangSelect.value,
+                jumlah: jumlahInput.value,
+                checker: checkerInput.value.trim()
+            };
+            
+            const response = await sendToGoogleSheets(formData, 'masuk');
+            
+            if (response.status === 'success') {
+                addHistoryItem(formData, 'masuk');
+                resetForm();
+                alert('Data berhasil disimpan (Barang Masuk)');
+            } else {
+                alert('Gagal menyimpan data: ' + response.message);
+            }
+        });
+        
+        // Event listener untuk tombol keluar
+        btnKeluar.addEventListener('click', async function() {
+            if (!validateForm()) return;
+            
+            const formData = {
+                jenisBarang: jenisBarangSelect.value,
+                namaBarang: namaBarangSelect.value,
+                jumlah: jumlahInput.value,
+                checker: checkerInput.value.trim()
+            };
+            
+            const response = await sendToGoogleSheets(formData, 'keluar');
+            
+            if (response.status === 'success') {
+                addHistoryItem(formData, 'keluar');
+                resetForm();
+                alert('Data berhasil disimpan (Barang Keluar)');
+            } else {
+                alert('Gagal menyimpan data: ' + response.message);
+            }
+        });
+        
+        // Event listener untuk tombol reset
+        btnReset.addEventListener('click', function() {
+            resetForm();
+        });
+        
+        // Fungsi untuk mereset form
+        function resetForm() {
+            jenisBarangSelect.value = '';
+            namaBarangSelect.value = '';
+            namaBarangSelect.disabled = true;
+            namaBarangSelect.innerHTML = '<option value="">Pilih Jenis Barang terlebih dahulu</option>';
+            jumlahInput.value = '';
+            checkerInput.value = '';
         }
     </script>
 </body>
 </html>
+

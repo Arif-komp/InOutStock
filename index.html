@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Input Barang Masuk & Keluar</title>
+  <!-- Bootstrap CSS untuk styling dan responsif -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body { padding: 20px; }
@@ -14,7 +15,9 @@
   <div class="container">
     <h1 class="mb-4">Input Barang Masuk & Keluar</h1>
     
+    <!-- Form input barang -->
     <form id="formBarang" class="row g-3">
+      <!-- Pilihan jenis barang -->
       <div class="col-md-4">
         <label for="jenisBarang" class="form-label">Jenis Barang</label>
         <select id="jenisBarang" class="form-select" required>
@@ -24,118 +27,149 @@
           <option value="Pakaian">Pakaian</option>
         </select>
       </div>
+
+      <!-- Pilihan nama barang, akan berubah sesuai jenis barang -->
       <div class="col-md-4">
         <label for="namaBarang" class="form-label">Nama Barang</label>
         <select id="namaBarang" class="form-select" required>
           <option value="" disabled selected>Pilih nama barang</option>
         </select>
       </div>
+
+      <!-- Input jumlah barang -->
       <div class="col-md-2">
         <label for="jumlah" class="form-label">Jumlah</label>
         <input type="number" id="jumlah" class="form-control" min="1" required />
       </div>
+
+      <!-- Input nama checker -->
       <div class="col-md-2">
         <label for="checker" class="form-label">Nama Checker</label>
         <input type="text" id="checker" class="form-control" required />
       </div>
-      
+
+      <!-- Tombol untuk input barang masuk dan keluar -->
       <div class="col-12">
         <button type="button" id="btnMasuk" class="btn btn-success me-2">Barang Masuk</button>
         <button type="button" id="btnKeluar" class="btn btn-danger">Barang Keluar</button>
       </div>
     </form>
 
+    <!-- Riwayat inputan -->
     <div class="riwayat">
       <h4>Riwayat Inputan</h4>
       <ul id="listRiwayat" class="list-group"></ul>
     </div>
   </div>
 
-<script>
-  // Data nama barang per jenis barang (bisa dikembangkan dari API jika perlu)
-  const dataBarang = {
-    Elektronik: ['TV', 'Laptop', 'Smartphone'],
-    Makanan: ['Beras', 'Gula', 'Minyak'],
-    Pakaian: ['Kaos', 'Jaket', 'Celana']
-  };
-
-  const jenisBarangSelect = document.getElementById('jenisBarang');
-  const namaBarangSelect = document.getElementById('namaBarang');
-  const jumlahInput = document.getElementById('jumlah');
-  const checkerInput = document.getElementById('checker');
-  const listRiwayat = document.getElementById('listRiwayat');
-
-  // Update nama barang saat jenis barang dipilih
-  jenisBarangSelect.addEventListener('change', () => {
-    const jenis = jenisBarangSelect.value;
-    namaBarangSelect.innerHTML = '<option value="" disabled selected>Pilih nama barang</option>';
-    if (dataBarang[jenis]) {
-      dataBarang[jenis].forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item;
-        namaBarangSelect.appendChild(option);
-      });
-    }
-  });
-
-  // Fungsi untuk kirim data ke Google Apps Script Web App
-  async function submitData(status) {
-    const jenisBarang = jenisBarangSelect.value;
-    const namaBarang = namaBarangSelect.value;
-    const jumlah = jumlahInput.value;
-    const checker = checkerInput.value.trim();
-
-    if (!jenisBarang || !namaBarang || !jumlah || !checker) {
-      alert('Mohon lengkapi semua form!');
-      return;
-    }
-
-    const payload = {
-      jenisBarang,
-      namaBarang,
-      jumlah,
-      checker,
-      status
+  <script>
+    // Data nama barang per jenis barang (bisa dikembangkan ke API jika perlu)
+    const dataBarang = {
+      Elektronik: ['TV', 'Laptop', 'Smartphone'],
+      Makanan: ['Beras', 'Gula', 'Minyak'],
+      Pakaian: ['Kaos', 'Jaket', 'Celana']
     };
 
-    try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbz1QwS34UbM0km9B1b-G9crAMBjjjVwnQprt43hI5-iaaupgPU5-tatp3YUkPuPSvMaqQ/exec', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const result = await response.json();
-      if (result.result === 'success') {
-        tambahRiwayat(status, jumlah, namaBarang, checker);
-        resetForm();
-      } else {
-        alert('Gagal menyimpan data: ' + result.message);
+    // Ambil elemen DOM yang dibutuhkan
+    const jenisBarangSelect = document.getElementById('jenisBarang');
+    const namaBarangSelect = document.getElementById('namaBarang');
+    const jumlahInput = document.getElementById('jumlah');
+    const checkerInput = document.getElementById('checker');
+    const listRiwayat = document.getElementById('listRiwayat');
+
+    // Update opsi nama barang ketika jenis barang berubah
+    jenisBarangSelect.addEventListener('change', () => {
+      const jenis = jenisBarangSelect.value;
+      // Reset opsi nama barang
+      namaBarangSelect.innerHTML = '<option value="" disabled selected>Pilih nama barang</option>';
+      if (dataBarang[jenis]) {
+        dataBarang[jenis].forEach(item => {
+          const option = document.createElement('option');
+          option.value = item;
+          option.textContent = item;
+          namaBarangSelect.appendChild(option);
+        });
       }
-    } catch (error) {
-      alert('Error: ' + error.message);
+    });
+
+    /**
+     * Fungsi untuk mengirim data ke Google Apps Script Web App
+     * @param {string} status - "masuk" atau "keluar"
+     */
+    async function submitData(status) {
+      const jenisBarang = jenisBarangSelect.value;
+      const namaBarang = namaBarangSelect.value;
+      const jumlah = jumlahInput.value;
+      const checker = checkerInput.value.trim();
+
+      // Validasi inputan
+      if (!jenisBarang || !namaBarang || !jumlah || !checker) {
+        alert('Mohon lengkapi semua form!');
+        return;
+      }
+
+      // Data yang akan dikirim ke backend
+      const payload = {
+        jenisBarang,
+        namaBarang,
+        jumlah,
+        checker,
+        status
+      };
+
+      try {
+        // Ganti URL di bawah dengan URL Web App Google Apps Script Anda
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzMU6FgfM70wuQ2psP3oxd6Mwr-EXGc9rbq7N16AMR1fKj9-6AfRjtdbWcB75WeOiK4wA/exec', {
+          method: 'POST', // gunakan POST sesuai doPost di Apps Script
+          mode: 'cors',   // mode CORS agar bisa lintas domain
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload) // kirim data JSON
+        });
+
+        // Parsing response JSON
+        const result = await response.json();
+
+        if (result.result === 'success') {
+          // Jika sukses, tampilkan riwayat inputan baru
+          tambahRiwayat(status, jumlah, namaBarang, checker);
+          resetForm();
+        } else {
+          alert('Gagal menyimpan data: ' + result.message);
+        }
+      } catch (error) {
+        // Tangani error jaringan atau fetch
+        alert('Error saat mengirim data: ' + error.message);
+      }
     }
-  }
 
-  // Tambah riwayat inputan ke list
-  function tambahRiwayat(status, jumlah, namaBarang, checker) {
-    const now = new Date();
-    const tanggal = now.toLocaleString();
-    const item = document.createElement('li');
-    item.className = 'list-group-item';
-    item.textContent = `${tanggal} (${status} - ${jumlah}) ${namaBarang} cek ${checker}`;
-    listRiwayat.prepend(item);
-  }
+    /**
+     * Fungsi menambah item riwayat inputan ke list di halaman
+     */
+    function tambahRiwayat(status, jumlah, namaBarang, checker) {
+      const now = new Date();
+      const tanggal = now.toLocaleString();
+      const item = document.createElement('li');
+      item.className = 'list-group-item';
+      item.textContent = `${tanggal} (${status} - ${jumlah}) ${namaBarang} cek ${checker}`;
+      // Tambah item riwayat paling atas
+      listRiwayat.prepend(item);
+    }
 
-  // Reset form setelah submit
-  function resetForm() {
-    jumlahInput.value = '';
-    checkerInput.value = '';
-  }
+    /**
+     * Fungsi reset form input setelah submit
+     */
+    function resetForm() {
+      jumlahInput.value = '';
+      checkerInput.value = '';
+    }
 
-  // Event tombol
-  document.getElementById('btnMasuk').addEventListener('click', () => submitData('masuk'));
-  document.getElementById('btnKeluar').addEventListener('click', () => submitData('keluar'));
-</script>
+    // Event listener tombol Barang Masuk
+    document.getElementById('btnMasuk').addEventListener('click', () => submitData('masuk'));
+
+    // Event listener tombol Barang Keluar
+    document.getElementById('btnKeluar').addEventListener('click', () => submitData('keluar'));
+  </script>
 </body>
 </html>

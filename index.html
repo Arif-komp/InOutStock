@@ -1,119 +1,141 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOCK MANUAL GUDANG G5000</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        input, select, button {
-            margin: 5px;
-            padding: 10px;
-            width: calc(100% - 22px);
-            font-size: 16px;
-        }
-        
-        @media (max-width: 600px) {
-            select {
-                max-height: 40px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-            
-            select option {
-                font-size: 14px;
-                padding: 8px;
-            }
-        }
-        .history {
-            margin-top: 20px;
-            background-color: #fff;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Input Barang Masuk & Keluar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body { padding: 20px; }
+    .riwayat { max-height: 300px; overflow-y: auto; margin-top: 20px; }
+  </style>
 </head>
 <body>
-    <h1>STOCK MANUAL GUDANG G5000</h1>
-    <form id="inventoryForm">
-        <select id="jenisBarang" required>
-            <option value="">Pilih Jenis Barang</option>
-            <option value="SEMEN">SEMEN</option>
-            <option value="BESI">BESI</option>
-            <option value="BWG">BWG - KAWAT DURI</option>
-            <option value="GALVALUM">GALVALUM - BONDEX</option>
+  <div class="container">
+    <h1 class="mb-4">Input Barang Masuk & Keluar</h1>
+    
+    <form id="formBarang" class="row g-3">
+      <div class="col-md-4">
+        <label for="jenisBarang" class="form-label">Jenis Barang</label>
+        <select id="jenisBarang" class="form-select" required>
+          <option value="" disabled selected>Pilih jenis barang</option>
+          <option value="Elektronik">Elektronik</option>
+          <option value="Makanan">Makanan</option>
+          <option value="Pakaian">Pakaian</option>
         </select>
-        <select id="namaBarang" required>
-            <option value="">Pilih Nama Barang</option>
+      </div>
+      <div class="col-md-4">
+        <label for="namaBarang" class="form-label">Nama Barang</label>
+        <select id="namaBarang" class="form-select" required>
+          <option value="" disabled selected>Pilih nama barang</option>
         </select>
-        <input type="number" id="jumlah" placeholder="Jumlah" required>
-        <input type="text" id="checker" placeholder="Checker" required>
-        <button type="button" onclick="submitData('masuk')">Barang Masuk</button>
-        <button type="button" onclick="submitData('keluar')">Barang Keluar</button>
-        <button type="reset">Reset</button>
+      </div>
+      <div class="col-md-2">
+        <label for="jumlah" class="form-label">Jumlah</label>
+        <input type="number" id="jumlah" class="form-control" min="1" required />
+      </div>
+      <div class="col-md-2">
+        <label for="checker" class="form-label">Nama Checker</label>
+        <input type="text" id="checker" class="form-control" required />
+      </div>
+      
+      <div class="col-12">
+        <button type="button" id="btnMasuk" class="btn btn-success me-2">Barang Masuk</button>
+        <button type="button" id="btnKeluar" class="btn btn-danger">Barang Keluar</button>
+      </div>
     </form>
-    <div class="history" id="history"></div>
-    <button onclick="clearHistory()">Hapus History</button>
 
-    <script>
-        const namaBarangOptions = {
-            'SEMEN': ["SEMEN TIGA RODA 50 KG", "SEMEN TONASA 50 KG", "SEMEN PUTIH JAGUAR 40 KG", "SB PEREKAT BATA RINGAN 40 KG"],
-        'BESI': ["KAWAT 8 (DELAPAN)", "KAWAT 10 (SEPULUH)", "KAWAT 12 (DUA BELAS)", "KAWAT 8.4 X 12", "KAWAT 25 (DUA PULUH LIMA) ULIR", "KAWAT 19 (SEMBILAN BELAS) ULIR", "KAWAT 22 (DUA PULUH DUA) ULIR", "KAWAT 13 (TIGA BELAS) ULIR", "KAWAT 7.1 X 12", "KAWAT 16 (ENAM BELAS)", "KAWAT 16 (ENAM BELAS) ULIR", "KAWAT 14 (EMPAT BELAS)", "KAWAT 11.4 X 12", "KAWAT 4.7 X 12", "KAWAT 10 (SEPULUH) ULIR", "KAWAT 6 (ENAM)"],
-        'BWG': ["BENDRAT PUTIH ROL (25 KG)", "BENDRAT PUTIH ROL (20 KG)", "BWG 12", "BWG 14", "BWG 16", "BWG 6", "BWG 8", "KAWAT DURI BIASA", "KAWAT DURI 100M (ANTI KARAT)", "LIS KAYU 4X4", "BENDRAT STIK 20 KG", "BWG 10"],
-        'GALVALUM': ["GALVALUM KENCANA (0.25) 4 M", "GALVALUM KENCANA (0.3) 4 M", "GALVALUM KENCANA (0.35) 4 M", "GALVALUM SOLID (0.3) 4 M"]
-        };
+    <div class="riwayat">
+      <h4>Riwayat Inputan</h4>
+      <ul id="listRiwayat" class="list-group"></ul>
+    </div>
+  </div>
 
-        document.getElementById('jenisBarang').addEventListener('change', function() {
-            const namaBarangSelect = document.getElementById('namaBarang');
-            namaBarangSelect.innerHTML = '<option value="">Pilih Nama Barang</option>';
-            const selectedJenis = this.value;
-            if (selectedJenis) {
-                namaBarangOptions[selectedJenis].forEach(function(item) {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    namaBarangSelect.appendChild(option);
-                });
-            }
-        });
+<script>
+  // Data nama barang per jenis barang (bisa dikembangkan dari API jika perlu)
+  const dataBarang = {
+    Elektronik: ['TV', 'Laptop', 'Smartphone'],
+    Makanan: ['Beras', 'Gula', 'Minyak'],
+    Pakaian: ['Kaos', 'Jaket', 'Celana']
+  };
 
-        function submitData(tipe) {
-            const jenisBarang = document.getElementById('jenisBarang').value;
-            const namaBarang = document.getElementById('namaBarang').value;
-            const jumlah = document.getElementById('jumlah').value;
-            const checker = document.getElementById('checker').value;
+  const jenisBarangSelect = document.getElementById('jenisBarang');
+  const namaBarangSelect = document.getElementById('namaBarang');
+  const jumlahInput = document.getElementById('jumlah');
+  const checkerInput = document.getElementById('checker');
+  const listRiwayat = document.getElementById('listRiwayat');
 
-            if (jenisBarang && namaBarang && jumlah && checker) {
-                google.script.run.withSuccessHandler(function() {
-                    const historyDiv = document.getElementById('history');
-                    const entry = document.createElement('div');
-                    entry.textContent = `${tipe.charAt(0).toUpperCase() + tipe.slice(1)}: ${jumlah} ${namaBarang} (${jenisBarang}) oleh ${checker}`;
-                    historyDiv.appendChild(entry);
-                    document.getElementById('inventoryForm').reset();
-                }).saveData(jenisBarang, namaBarang, jumlah, checker);
-            } else {
-                alert('Semua field harus diisi!');
-            }
-        }
+  // Update nama barang saat jenis barang dipilih
+  jenisBarangSelect.addEventListener('change', () => {
+    const jenis = jenisBarangSelect.value;
+    namaBarangSelect.innerHTML = '<option value="" disabled selected>Pilih nama barang</option>';
+    if (dataBarang[jenis]) {
+      dataBarang[jenis].forEach(item => {
+        const option = document.createElement('option');
+        option.value = item;
+        option.textContent = item;
+        namaBarangSelect.appendChild(option);
+      });
+    }
+  });
 
-        function clearHistory() {
-            document.getElementById('history').innerHTML = '';
-        }
-    </script>
+  // Fungsi untuk kirim data ke Google Apps Script Web App
+  async function submitData(status) {
+    const jenisBarang = jenisBarangSelect.value;
+    const namaBarang = namaBarangSelect.value;
+    const jumlah = jumlahInput.value;
+    const checker = checkerInput.value.trim();
+
+    if (!jenisBarang || !namaBarang || !jumlah || !checker) {
+      alert('Mohon lengkapi semua form!');
+      return;
+    }
+
+    const payload = {
+      jenisBarang,
+      namaBarang,
+      jumlah,
+      checker,
+      status
+    };
+
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbz1QwS34UbM0km9B1b-G9crAMBjjjVwnQprt43hI5-iaaupgPU5-tatp3YUkPuPSvMaqQ/exec', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const result = await response.json();
+      if (result.result === 'success') {
+        tambahRiwayat(status, jumlah, namaBarang, checker);
+        resetForm();
+      } else {
+        alert('Gagal menyimpan data: ' + result.message);
+      }
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  }
+
+  // Tambah riwayat inputan ke list
+  function tambahRiwayat(status, jumlah, namaBarang, checker) {
+    const now = new Date();
+    const tanggal = now.toLocaleString();
+    const item = document.createElement('li');
+    item.className = 'list-group-item';
+    item.textContent = `${tanggal} (${status} - ${jumlah}) ${namaBarang} cek ${checker}`;
+    listRiwayat.prepend(item);
+  }
+
+  // Reset form setelah submit
+  function resetForm() {
+    jumlahInput.value = '';
+    checkerInput.value = '';
+  }
+
+  // Event tombol
+  document.getElementById('btnMasuk').addEventListener('click', () => submitData('masuk'));
+  document.getElementById('btnKeluar').addEventListener('click', () => submitData('keluar'));
+</script>
 </body>
 </html>

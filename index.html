@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" /> <!-- Set karakter encoding -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsif di perangkat mobile -->
+  <title>Form Input Barang Gudang G5000</title> <!-- Judul halaman -->
+  <style>
+    /* Atur font utama dan background halaman */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font utama */
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%); /* Gradasi background */
+      min-height: 91vh; /* Tinggi minimal layar penuh */
+      display: flex; /* Flexbox untuk center */
+      justify-content: center; /* Tengah horizontal */
+      align-items: flex-start; /* Mulai dari atas */
+      padding: 8px; /* Padding kecil di semua sisi */
+      color: #333; /* Warna teks utama */
+    }
+    /* Container utama form */
+    .container {
+      background: #fff; /* Background putih */
+      width: 100%; /* Lebar penuh */
+      max-width: 480px; /* Maksimal 480px agar tidak terlalu lebar */
+      padding: 12px; /* Padding kecil di semua sisi */
+      border-radius: 12px; /* Sudut membulat */
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15); /* Bayangan lembut */
+      display: flex; /* Flexbox */
+      flex-direction: column; /* Kolom vertikal */
+      gap: 16px; /* Jarak antar elemen */
+      align-items: center; /* Tengah horizontal */
+    }
+    /* Judul form */
+    h2 {
+      color: #1e3c72; /* Warna biru gelap */
+      font-weight: 700; /* Tebal */
+      font-size: 1.5rem; /* Ukuran font */
+      text-align: center; /* Tengah */
+      letter-spacing: 1px; /* Spasi antar huruf */
+      margin: 0; /* Hilangkan margin default */
+    }
+    /* Label judul radio */
+    label {
+      font-weight: 600; /* Tebal */
+      font-size: 1rem; /* Ukuran font */
+      color: #1e3c72; /* Warna biru gelap */
+      user-select: none; /* Tidak bisa di-select */
+      width: 100%; /* Lebar penuh */
+      text-align: center; /* Tengah */
+      margin-bottom: 2px; /* Jarak bawah kecil */
+    }
+    /* Grup radio 2 baris */
+    .radio-group {
+      display: grid; /* Gunakan grid */
+      grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+      gap: 8px 10px; /* Jarak antar tombol */
+      width: 100%; /* Lebar penuh */
+      justify-items: center; /* Tengah horizontal */
+    }
+    /* Label radio sebagai tombol kecil */
+    .radio-label {
+      cursor: pointer; /* Pointer saat hover */
+      background: #dfe6e9; /* Background abu */
+      padding: 6px 10px; /* Padding kecil */
+      border-radius: 8px; /* Sudut membulat */
+      border: 2px solid transparent; /* Border transparan default */
+      font-size: 0.92rem; /* Ukuran font kecil */
+      color: #2d3436; /* Warna teks abu gelap */
+      display: flex; /* Flexbox */
+      align-items: center; /* Tengah vertikal */
+      justify-content: center; /* Tengah horizontal */
+      min-width: 80px; /* Lebar minimal tombol */
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Transisi halus */
+      user-select: none; /* Tidak bisa di-select */
+      white-space: nowrap; /* Tidak pecah baris */
+    }
+    /* Sembunyikan radio asli */
+    .radio-label input[type="radio"] {
+      display: none; /* Sembunyikan input radio */
+    }
+    /* Style saat radio dipilih */
+    .radio-label input[type="radio"]:checked + span {
+      background-color: #0984e3; /* Background biru */
+      color: white; /* Teks putih */
+      border: 2px solid #0984e3; /* Border biru */
+      box-shadow: 0 0 8px rgba(9,132,227,0.6); /* Bayangan biru */
+      border-radius: 8px; /* Sudut membulat */
+      padding: 6px 10px; /* Padding sama dengan default */
+      min-width: 80px; /* Lebar minimal */
+      text-align: center; /* Tengah */
+      display: inline-block; /* Inline block */
+    }
+    /* Iframe Google Form */
+    iframe {
+      width: 100%; /* Lebar penuh */
+      height: 580px; /* Tinggi iframe */
+      border: none; /* Tanpa border */
+      border-radius: 12px; /* Sudut membulat */
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12); /* Bayangan lembut */
+      transition: opacity 0.4s ease; /* Transisi opacity */
+      opacity: 0; /* Default transparan */
+      pointer-events: none; /* Tidak bisa diakses sebelum aktif */
+      margin-top: 6px; /* Jarak atas kecil */
+    }
+    /* Iframe aktif */
+    iframe.visible {
+      opacity: 1; /* Tampilkan iframe */
+      pointer-events: auto; /* Bisa diakses */
+    }
+    /* Responsive untuk layar sangat kecil */
+    @media (max-width: 400px) {
+      .container {
+        max-width: 100%; /* Lebar penuh */
+        padding: 8px; /* Padding kecil */
+      }
+      h2 {
+        font-size: 1.1rem; /* Ukuran judul lebih kecil */
+      }
+      .radio-label {
+        min-width: 65px; /* Tombol lebih kecil */
+        font-size: 0.85rem; /* Font lebih kecil */
+        padding: 4px 7px; /* Padding lebih kecil */
+      }
+      iframe {
+        height: 340px; /* Tinggi iframe lebih kecil */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Container utama -->
+  <div class="container" role="main" aria-label="Form Input Barang">
+    <!-- Judul form -->
+    <h2>STOCK MANUAL G5000</h2>
+    <!-- Label pilihan jenis barang -->
+    <label id="jenisLabel">Pilih Jenis Barang</label>
+    <!-- Grup radio 2 baris -->
+    <div class="radio-group" role="radiogroup" aria-labelledby="jenisLabel" tabindex="0">
+      <!-- Tombol radio BESI -->
+      <label class="radio-label" for="jenis-besi">
+        <input type="radio" id="jenis-besi" name="jenisBarang" value="besi" />
+        <span>BESI</span>
+      </label>
+      <!-- Tombol radio SEMEN -->
+      <label class="radio-label" for="jenis-semen">
+        <input type="radio" id="jenis-semen" name="jenisBarang" value="semen" />
+        <span>SEMEN</span>
+      </label>
+      <!-- Tombol radio BWG -->
+      <label class="radio-label" for="jenis-bwg_kawatduri">
+        <input type="radio" id="jenis-bwg_kawatduri" name="jenisBarang" value="bwg_kawatduri" />
+        <span>BWG</span>
+      </label>
+      <!-- Tombol radio GALVALUM -->
+      <label class="radio-label" for="jenis-galvalum_bondex">
+        <input type="radio" id="jenis-galvalum_bondex" name="jenisBarang" value="galvalum_bondex" />
+        <span>GALVALUM</span>
+      </label>
+    </div>
+    <!-- Iframe untuk embed Google Form -->
+    <iframe id="formEmbed" title="Form Input Barang"></iframe>
+  </div>
+
+  <script>
+    // Mapping jenis barang ke URL Google Form (ganti sesuai kebutuhan)
+    const formUrls = {
+      semen: 'https://docs.google.com/forms/d/e/1FAIpQLSdZ782ypKNPYRAUrOcJG4bMBAWk_j1R3GuNJi7FAjqkbN6phA/viewform?embedded=true',
+      besi: 'https://docs.google.com/forms/d/1b9LwXsPNqy8YJ0PU7e0HeUyc4s3gEeDGOclnaMXY2EQ/viewform?edit_requested=true?embedded=true',
+      bwg_kawatduri: 'https://docs.google.com/forms/d/1KGFYkQ1jmAVSgz5_YSKnxyKXl7EhgPwF-7oM0ykWPRE/viewform?edit_requested=true?embedded=true',
+      galvalum_bondex: 'https://docs.google.com/forms/d/e/1FAIpQLSdJOCRlVQ24XE1GmmKKg9HYXMOQ_0loKHKjD-qtdnienOsdRA/viewform?embedded=true'
+    };
+
+    // Ambil semua radio button
+    const radioButtons = document.querySelectorAll('input[name="jenisBarang"]');
+    // Ambil elemen iframe
+    const formEmbed = document.getElementById('formEmbed');
+
+    // Pasang event listener ke setiap radio button
+    radioButtons.forEach(radio => {
+      radio.addEventListener('change', () => {
+        // Ambil value radio yang dipilih
+        const jenis = document.querySelector('input[name="jenisBarang"]:checked').value;
+        // Jika ada pilihan dan URL formnya tersedia
+        if (jenis && formUrls[jenis]) {
+          formEmbed.classList.remove('visible'); // Sembunyikan iframe dulu
+          setTimeout(() => {
+            formEmbed.src = formUrls[jenis]; // Ganti src iframe
+            formEmbed.classList.add('visible'); // Tampilkan iframe
+          }, 200); // Delay transisi
+        } else {
+          formEmbed.classList.remove('visible'); // Sembunyikan iframe jika tidak ada pilihan
+          formEmbed.src = ''; // Kosongkan src
+        }
+      });
+    });
+  </script>
+</body>
+</html>

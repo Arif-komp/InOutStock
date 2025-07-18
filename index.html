@@ -2,82 +2,99 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
+<!-- Mengatur viewport untuk responsivitas di perangkat mobile -->
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Form Input Barang Gudang G5000</title>
 <style>
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* Tinggi body mengikuti tinggi layar penuh */
-  min-height: 120vh;
-  margin: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center; /* Tengah vertikal */
-  padding: 0;
-  color: #333;
-
-  /* Animasi background gradasi responsif */
-  background: linear-gradient(270deg, #74ebd5, #ACB6E5, #f7971e, #ffd200, #667eea, #764ba2, #74ebd5);
-  background-size: 1400% 1400%;
-  animation: gradientShift 30s ease infinite;
+:root {
+  /* Variabel safe area (untuk handphone yang punya notch/lubang kamera) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ==== BAGIAN BODY ==== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font default */
+  min-height: 100svh;  /* Minimal tinggi screen Viewport Height (support modern browser) */
+  min-height: 100dvh;  /* Dukungan device dengan dynamic viewport */
+  min-height: 100vh;   /* Fallback ke vh biasa */
+  margin: 0;
+  display: flex;                 /* Flex agar container ada di tengah */
+  justify-content: center;
+  align-items: center;           /* Vertikal tengah */
+  padding: var(--safe-top) 0 var(--safe-bottom) 0; /* Safe area atas bawah */
+  color: #333;
+  /* Animasi background gradasi warna dinamis */
+  background: linear-gradient(270deg, #74ebd5, #ACB6E5, #f7971e, #ffd200, #667eea, #764ba2, #74ebd5);
+  background-size: 1400% 1400%;        /* Ukuran diperbesar agar animasi halus */
+  animation: gradientShift 30s ease infinite; /* Animasi gradasi berjalan 30 detik loop */
+}
+
+/* Keyframes untuk animasi background gradasi */
 @keyframes gradientShift {
   0% {background-position: 0% 50%;}
-  16% {background-position: 25% 50%;}
-  33% {background-position: 50% 50%;}
-  50% {background-position: 75% 50%;}
-  66% {background-position: 100% 50%;}
-  83% {background-position: 75% 50%;}
+  20% {background-position: 50% 0%;}
+  40% {background-position: 100% 50%;}
+  60% {background-position: 50% 100%;}
+  80% {background-position: 0% 50%;}
   100% {background-position: 0% 50%;}
 }
 
+/* ==== CONTAINER PEMBUNGKUS UTAMA ==== */
 .container {
   background: #fff;
-  width: 90vw;
-  max-width: 480px;
-  /* Tinggi relatif, minimal tetap rapi, maksimal tidak lebih dari 100vh */
-  height: 115vh;
-  max-height: 100vh;
-  min-height: 420px;
+  width: 96vw;                            /* Lebar 96% viewport width */
+  max-width: 480px;                       /* Batas lebar maksimum */
+  height: clamp(370px, 85svh, 97svh);     /* Tinggi fleksibel antara 370px - 97% viewport */
+  max-height: 98svh;
+  min-height: 320px;
   box-sizing: border-box;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+  padding: min(4vw, 16px) min(3vw, 16px); /* Padding proporsional */
+  border-radius: 2.2vw;
+  box-shadow: 0 1.6vw 4vw rgba(0,0,0,0.14); /* Efek bayangan kontainer */
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: min(4vw, 20px);    /* Jarak antar elemen di dalam container */
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
+  transition: width 0.3s, height 0.3s;
 }
+
+/* ==== JUDUL ==== */
 h2 {
-  color: #1e3c72;
+  color: #1e3c72;                           /* Biru tua */
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: min(6vw, 1.6rem);              /* Ukuran judul responsif */
   text-align: center;
-  letter-spacing: 1px;
-  margin: 0 0 8px 0;
+  letter-spacing: 0.04em;
+  margin: 0 0 min(2vw, 14px) 0;
 }
-/* Non-radio label */
+
+/* ==== LABEL ==== */
 label {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: min(4vw, 1rem);
   color: #1e3c72;
   user-select: none;
   width: 100%;
   text-align: center;
-  margin-bottom: 2px;
+  margin-bottom: min(1vw, 8px);
 }
+
+/* ==== GRUP TOMBOL RADIO ==== */
 .radio-group {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px 20px;
+  grid-template-columns: repeat(4, 1fr);           /* 4 kolom sejajar (potrait) */
+  gap: min(2vw, 16px) min(4vw, 24px);
   width: 100%;
   justify-items: center;
 }
+
+/* ==== TOMBOL RADIO ==== */
 .radio-label {
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 1vw;
   border: 2px solid #ccc;
   background: #ccc;
   color: #333;
@@ -87,71 +104,49 @@ label {
   transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s;
   user-select: none;
   white-space: nowrap;
-  min-width: 50px;
-  padding: 2px 2px;
-  font-size: 12px;
+  min-width: 13vw;
+  padding: min(1vw,6px) min(2vw,10px);
+  font-size: min(3.2vw, 1rem);
   font-weight: 1000;
 }
+/* Input radio disembunyikan, hanya label yang terlihat */
 .radio-label input[type="radio"] {
   display: none;
 }
+/* Tampilan teks di dalam tombol radio */
 .radio-label span {
   width: 100%;
   text-align: center;
   display: inline-block;
-  padding: 6px 10px;
+  padding: min(1.3vw, 8px) min(3vw, 18px);
   border-radius: 8px;
   transition: inherit;
   color: inherit;
 }
+/* Ketika tombol radio terpilih */
 .radio-label input[type="radio"]:checked + span {
-  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+  box-shadow: 0 0 min(2vw,10px) rgba(255,255,255,0.8);
   border-color: white;
   font-weight: 700;
   color: white;
   background: linear-gradient(135deg, #4b6cb7, #182848);
 }
-/* Responsive - layar sangat kecil */
-@media (max-width: 900px) {
-  .container {
-    max-width: 100vw;
-    padding: 6px;
-    height: 900vh;
-    min-height: 0;
-  }
-  h2 { font-size: 1.1rem; }
-  .radio-label {
-    min-width: 52px;
-    font-size: 0.80rem;
-    padding: 5px 6px;
-  }
-}
-/* Tablet/smartphone lebih lebar */
-@media (min-width: 401px) and (max-width: 800px) {
-  .container {
-    width: 98vw;
-    max-width: 560px;
-    min-height: 900px;
-    height: 250vh;
-  }
-  .radio-label {
-    font-size: 0.90rem;
-    padding: 7px 14px;
-  }
-}
+
+/* ==== IFRAME GOOGLE FORM ==== */
 iframe {
-  width: 100%;
-  /* Tinggi mengikuti 100% tinggi container minus elemen di atasnya */
-  flex-grow: 1;
-  min-height: 220px;
-  max-height: 100vh;
+  width: 100%;                /* Lebar penuh parent .container */
+  flex: 1 1 0;                /* Isi vertikal sebanyak mungkin */
+  min-height: 32svh;
+  min-height: 160px;
+  max-height: 62vh;
+  aspect-ratio: 3/4;
   border: none;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
   transition: opacity 0.4s ease, height 0.3s;
   opacity: 0;
   pointer-events: none;
-  margin-top: 6px;
+  margin-top: min(3vw, 14px);
   background: #f0f0f0;
   display: block;
 }
@@ -159,75 +154,105 @@ iframe.visible {
   opacity: 1;
   pointer-events: auto;
 }
+
+/* ====== RESPONSIF LANDSCAPE (lebar) ======= */
+@media (orientation: landscape) {
+  .container {
+    flex-direction: row;                      /* Letak horizontal */
+    gap: min(6vw, 36px);
+    align-items: stretch;
+    justify-content: center;
+    height: clamp(250px, 93svh, 99svh);
+    width: min(96vw, 900px);
+    max-width: 980px;
+  }
+  .radio-group {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4,1fr);        /* Susun tombol radio secara vertikal */
+    justify-items: stretch;
+    max-width: 160px;
+    min-width: 100px;
+    gap: min(2vw,12px);
+  }
+  .iframe,
+  iframe {
+    aspect-ratio: 16/9;
+    min-height: 240px;
+    max-height: 92vh;
+    min-width: 300px;
+    margin-top: 0;
+  }
+}
+
+/* ====== RESPONSIF POTRAIT (tinggi) ======= */
+@media (orientation: portrait) {
+  .container {
+    flex-direction: column;                   /* Susun vertikal */
+    width: 98vw;
+    max-width: 98vw;
+    height: clamp(330px, 87svh, 98svh);
+  }
+  .radio-group {
+    grid-template-columns: repeat(4, 1fr);    /* Kembali horizontal */
+  }
+}
 </style>
 </head>
 <body>
 <div class="container" role="main" aria-label="Form Input Barang">
+  <!-- Judul Form -->
   <h2>STOCK MANUAL G5000</h2>
+  <!-- Label untuk radio group -->
   <label id="jenisLabel">Pilih Jenis Barang</label>
+  <!-- Radio Group Tombol Pilihan -->
   <div class="radio-group" role="radiogroup" aria-labelledby="jenisLabel" tabindex="0">
+    <!-- Tombol Besi -->
     <label class="radio-label btn-besi" for="jenis-besi">
       <input type="radio" id="jenis-besi" name="jenisBarang" value="besi" />
       <span>BESI</span>
     </label>
+    <!-- Tombol Semen -->
     <label class="radio-label btn-semen" for="jenis-semen">
       <input type="radio" id="jenis-semen" name="jenisBarang" value="semen" />
       <span>SEMEN</span>
     </label>
+    <!-- Tombol BWG -->
     <label class="radio-label btn-bwg" for="jenis-bwg_kawatduri">
       <input type="radio" id="jenis-bwg_kawatduri" name="jenisBarang" value="bwg_kawatduri" />
       <span>BWG</span>
     </label>
+    <!-- Tombol Galvalum -->
     <label class="radio-label btn-galvalum" for="jenis-galvalum_bondex">
       <input type="radio" id="jenis-galvalum_bondex" name="jenisBarang" value="galvalum_bondex" />
       <span>GALVALUM</span>
     </label>
   </div>
+  <!-- Frame Google Form -->
   <iframe id="formEmbed" title="Form Input Barang"></iframe>
 </div>
 
 <script>
+// Mapping jenis barang ke URL Google Form masing-masing
 const formUrls = {
   semen: 'https://docs.google.com/forms/d/e/1FAIpQLSdZ782ypKNPYRAUrOcJG4bMBAWk_j1R3GuNJi7FAjqkbN6phA/viewform?embedded=true',
   besi: 'https://docs.google.com/forms/d/1b9LwXsPNqy8YJ0PU7e0HeUyc4s3gEeDGOclnaMXY2EQ/viewform?edit_requested=true?embedded=true',
   bwg_kawatduri: 'https://docs.google.com/forms/d/1KGFYkQ1jmAVSgz5_YSKnxyKXl7EhgPwF-7oM0ykWPRE/viewform?edit_requested=true?embedded=true',
   galvalum_bondex: 'https://docs.google.com/forms/d/e/1FAIpQLSdJOCRlVQ24XE1GmmKKg9HYXMOQ_0loKHKjD-qtdnienOsdRA/viewform?embedded=true'
 };
-
 const radioButtons = document.querySelectorAll('input[name="jenisBarang"]');
 const formEmbed = document.getElementById('formEmbed');
 
-// Responsive adjust iframe: proporsional pada semua device
+/* ==== SEKSI RESPONSIF: Penyesuaian tinggi iframe/container otomatis ==== */
 function adjustIframeHeight() {
-  const container = document.querySelector('.container');
-  let containerHeight;
-  let iframeHeight;
-  // Get usable viewport for mobile/tablet/desktop
-  const vh = window.innerHeight;
-  const vw = window.innerWidth;
-  // Container: tinggi 88-96% tinggi viewport (dengan padding/margin aman)
-  if (vw <= 400) {
-    containerHeight = Math.max(0.97 * vh, 325);
-    container.style.height = containerHeight + 'px';
-    iframeHeight = Math.max(containerHeight - 120, 210);
-  } else if (vw <= 768) {
-    containerHeight = Math.max(0.94 * vh, 400);
-    container.style.height = containerHeight + 'px';
-    iframeHeight = Math.max(containerHeight - 130, 250);
-  } else {
-    // desktop, laptop
-    containerHeight = Math.max(0.88 * vh, 480);
-    container.style.height = containerHeight + 'px';
-    iframeHeight = Math.max(containerHeight - 140, 320);
-  }
-  // Set iframe height agar tidak overflow dan tetap proporsional
-  formEmbed.style.height = Math.min(iframeHeight, 0.97 * containerHeight) + 'px';
+  // Semua tinggi diatur dengan CSS responsif menggunakan vw/vh/svh
+  formEmbed.style.height = ''; // Tidak perlu JS, hanya trigger reflow
 }
-
 radioButtons.forEach(radio => {
   radio.addEventListener('change', () => {
+    // Ambil value jenis yang terpilih
     const jenis = document.querySelector('input[name="jenisBarang"]:checked').value;
     if (jenis && formUrls[jenis]) {
+      // Hilangkan dulu iframe, lalu load url sesuai pilihan
       formEmbed.classList.remove('visible');
       setTimeout(() => {
         formEmbed.src = formUrls[jenis];
@@ -235,53 +260,46 @@ radioButtons.forEach(radio => {
         adjustIframeHeight();
       }, 200);
     } else {
+      // Jika tidak ada, kosongkan iframe
       formEmbed.classList.remove('visible');
       formEmbed.src = '';
     }
   });
 });
 
-// Fungsi bantu untuk cek submit Google Form
+/* ==== Deteksi submit Google Form dan reload agar iframe kosong lagi ==== */
 function isFormSubmittedUrl(url) {
+  // Pola URL pada Google Form setelah submit
   const submitIndicators = [
-    'formResponse',
-    'formResponse?',
-    'thankyou',
-    'submit',
-    'viewform?usp=pp_url',
-    'closedform',
-    'formResponseEdit',
-    'formResponseView'
+    'formResponse', 'formResponse?', 'thankyou', 'submit',
+    'viewform?usp=pp_url', 'closedform', 'formResponseEdit', 'formResponseView'
   ];
-  return submitIndicators.some(indicator => url.includes(indicator));
+  return submitIndicators.some(ind => url.includes(ind));
 }
-
-// Reset otomatis iframe setelah submit
 formEmbed.addEventListener('load', function() {
   try {
+    // Cek link iframe setelah load (jika bisa, window.origin sama)
     const currentSrc = formEmbed.contentWindow.location.href;
     if (isFormSubmittedUrl(currentSrc)) {
       const jenis = document.querySelector('input[name="jenisBarang"]:checked')?.value;
       if (jenis && formUrls[jenis]) {
-        setTimeout(() => {
-          formEmbed.src = formUrls[jenis];
-        }, 600);
+        setTimeout(() => { formEmbed.src = formUrls[jenis]; }, 600); // Reload ke form kosong
       }
     }
   } catch (e) {
+    // Jika beda origin dan error, cek src pada elemen iframe saja
     if (isFormSubmittedUrl(formEmbed.src)) {
       const jenis = document.querySelector('input[name="jenisBarang"]:checked')?.value;
       if (jenis && formUrls[jenis]) {
-        setTimeout(() => {
-          formEmbed.src = formUrls[jenis];
-        }, 600);
+        setTimeout(() => { formEmbed.src = formUrls[jenis]; }, 600);
       }
     }
   }
 });
-
+// Trigger responsif saat load/resize/rotate
 window.addEventListener('load', adjustIframeHeight);
 window.addEventListener('resize', adjustIframeHeight);
+window.addEventListener('orientationchange', adjustIframeHeight);
 </script>
 </body>
 </html>
